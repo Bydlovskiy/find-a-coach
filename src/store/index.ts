@@ -1,12 +1,16 @@
 import { createStore } from 'vuex'
+import couchesModule from './couches/index'
 
 export default createStore({
-  state: {
+  state() {
+    return {
+
+    }
   },
   mutations: {
   },
   actions: {
   },
-  modules: {
-  }
+  modules: { couches: couchesModule },
+
 })

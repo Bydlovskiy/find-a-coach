@@ -1,24 +1,26 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import CoachesList from '../pages/coaches/CoachesList.vue'
+import CoachesDetail from '../pages/coaches/CoachDetail.vue'
+import CoachesContact from '../pages/messages/CoachContact.vue'
+import MessagesList from '../pages/messages/MessagesList.vue'
+import CoachRegister from '../pages/coaches/CoachRegister.vue'
+import WrongPath from '../pages/error/WrongPath.vue'
 
 const routes: Array<RouteRecordRaw> = [
+  { path: '/', redirect: '/coaches' },
+  { path: '/coaches', component: CoachesList },
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/coaches/:id', component: CoachesDetail, children: [
+      { path: 'contact', component: CoachesContact }
+    ]
   },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+  { path: '/messages', component: MessagesList },
+  { path: '/register', component: CoachRegister },
+  { path: '/:somethingWrong(.*)', component: WrongPath }
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes
 })
 
