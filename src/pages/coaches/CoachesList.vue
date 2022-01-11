@@ -14,16 +14,18 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      
+    };
   },
   methods: {
     test() {
-      this.$store.dispatch('coaches/getCoaches');
+      this.$store.dispatch('coachesModule/getCoaches');
     },
   },
   computed: {
     coachesList() {
-      return this.$store.getters['coaches/coachesList'];
+      return this.$store.getters.coaches;
     },
   },
 };
