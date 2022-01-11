@@ -1,28 +1,30 @@
 <template>
-    <button @click="test">TEST</button>
-    <ul>
-        <li v-for="item in coachesList" :key="item.name">{{ item.name }}  {{ item.rating }}</li>
-    </ul>
+  <el-button @click="test">TEST</el-button>
+  <ul v-if="coachesList.length > 0">
+    <li v-for="coach in coachesList" :key="coach.id">
+       {{ coach.firstName }}
+    </li>
+  </ul>
+  <div v-else >
+    Emty List
+  </div>
+
 </template>
 
 <script>
-
 export default {
-    data(){
-        return {
-            
-        }
+  data() {
+    return {};
+  },
+  methods: {
+    test() {
+      this.$store.dispatch('coaches/getCoaches');
     },
-    methods : {
-        test(){
-          this.$store.dispatch('getCoaches');
-        
-        }
+  },
+  computed: {
+    coachesList() {
+      return this.$store.getters['coaches/coachesList'];
     },
-    computed : {
-        coachesList(){
-            return this.$store.getters.coachesList
-        } 
-    }
-}
+  },
+};
 </script>

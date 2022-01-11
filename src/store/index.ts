@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import couchesModule from './couches/index'
+import coachesModule from './coaches/index'
 
 export default createStore({
   state() {
@@ -11,6 +11,6 @@ export default createStore({
   },
   actions: {
   },
-  modules: { couches: couchesModule },
+  modules: { coaches: coachesModule },
 
 })
