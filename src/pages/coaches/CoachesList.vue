@@ -1,32 +1,37 @@
 <template>
-  <el-button @click="test">TEST</el-button>
-  <ul v-if="coachesList.length > 0">
-    <li v-for="coach in coachesList" :key="coach.id">
-       {{ coach.firstName }}
-    </li>
-  </ul>
-  <div v-else >
-    Emty List
-  </div>
-
+  <el-main>
+    <div></div>
+    <el-button @click="refreshList">TEST</el-button>
+    <ul v-if="coachesList">
+      <coach-item
+        v-for="coach in coachesList"
+        :key="coach.id"
+        :coach="coach"
+      ></coach-item>
+    </ul>
+    <div v-else>Emty List</div>
+  </el-main>
 </template>
 
 <script>
+import { computed } from "vue";
+import { store } from "@/store/index";
+import CoachItem from "@/components/coaches/CoachItem.vue";
 export default {
-  data() {
-    return {
-      
+  components: {
+    CoachItem,
+  },
+  setup() {
+    const coachesList = computed(() => {
+      return store.getters.coaches;
+    });
+    const refreshList = () => {
+      store.dispatch("getCoaches");
     };
-  },
-  methods: {
-    test() {
-      this.$store.dispatch('coachesModule/getCoaches');
-    },
-  },
-  computed: {
-    coachesList() {
-      return this.$store.getters.coaches;
-    },
+    return {
+      coachesList,
+      refreshList,
+    };
   },
 };
 </script>

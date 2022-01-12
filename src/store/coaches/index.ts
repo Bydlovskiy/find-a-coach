@@ -1,9 +1,9 @@
-import { Module, VuexModule, Mutation, MutationAction, Action } from 'vuex-module-decorators'
-import { store } from '../index'
+import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
+import http from '@/services/http/couches/index'
+import { Coach } from '@/pages/coaches/CoachType'
 @Module
-class CoachesModule extends VuexModule {
-    listGetError = false;
-    coachesList = [
+export default class CoachesModule extends VuexModule {
+    coachesList: Coach[] = [
         {
             id: 'c1',
             firstName: 'Maximilian',
@@ -27,15 +27,20 @@ class CoachesModule extends VuexModule {
     get coaches() {
         return this.coachesList
     }
-    get coachDetails() {
-        return
-        // return state.coachList.find(coach  => coach.id === this.currentCoachId)
-    }
 
     @Mutation
     setCoaches(data: any) {
         this.coachesList = data;
     }
+    @Action({ rawError: true })
+    getCoaches() {
+        console.log(';qwertyuiop[');
+
+        http.getData()
+            .then(data => {
+                console.log(data.data);
+                this.context.commit('setCoaches', data.data)
+            })
+    }
 }
 
-export const coachesStore = new CoachesModule({ store, name: 'coachesStore' })
