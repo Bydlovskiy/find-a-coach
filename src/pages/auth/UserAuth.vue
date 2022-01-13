@@ -1,12 +1,12 @@
 <template>
-  <el-card class="w-6/12 flex">
-    <el-form
-      class="demo-ruleForm"
-      ref="form"
-      :model="authForm"
-      label-position="top"
-      :rules="rules"
-    >
+    <el-card class="w-full flex box-card">
+  <el-form
+    class="demo-ruleForm w-full"
+    ref="form"
+    :model="authForm"
+    label-position="top"
+    :rules="rules"
+  >
       <el-form-item label="email" prop="email">
         <el-input v-model.trim="authForm.email" type="email"></el-input>
       </el-form-item>
@@ -20,8 +20,8 @@
       </el-form-item>
       <el-button @click="submitUser">{{ submitButton }}</el-button>
       <el-button @click="changeMode">{{ changeModeButton }}</el-button>
-    </el-form>
-  </el-card>
+  </el-form>
+    </el-card>
 </template>
 
 <script>

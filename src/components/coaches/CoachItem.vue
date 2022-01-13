@@ -38,6 +38,7 @@ export default {
   props: {
     coach: {
       type: Object,
+      required: true
     },
   },
 

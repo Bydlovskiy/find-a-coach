@@ -43,10 +43,6 @@ export default class CoachesModule extends VuexModule {
     @Action({ rawError: true })
     setCoach(coach: ICoach) {
         http.setCoach(coach)
-            .then(data => {
-                console.log(data);
-
-            })
     }
 
 
