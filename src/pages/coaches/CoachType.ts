@@ -1,4 +1,4 @@
-export interface Coach {
+export interface ICoach {
     id: string,
     firstName: string,
     lastName: string,

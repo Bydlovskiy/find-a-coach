@@ -33,6 +33,7 @@
 </template>
 
 <script>
+// import { store } from "@/store/MainStore";
 export default {
   props: {
     coach: {
@@ -40,9 +41,22 @@ export default {
     },
   },
 
-  setup(props) {
-    console.log(props.coach);
-  },
+  // setup(props) {
+  //   const send = () => {
+  //     store.dispatch("setCoach", {
+  //       id: "c2",
+  //       firstName: "Julie",
+  //       lastName: "Jones",
+  //       areas: ["frontend", "career"],
+  //       description:
+  //         "I am Julie and as a senior developer in a big tech company, I can help you get your first job or progress in your current role.",
+  //       hourlyRate: 30,
+  //     });
+  //   };
+  //   return {
+  //     send,
+  //   };
+  // },
 };
 </script>
 

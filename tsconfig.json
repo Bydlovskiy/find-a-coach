@@ -33,7 +33,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-, "src/services/http/axios.ts"  ],
+, "src/services/http/MainAxios.ts"  ],
   "exclude": [
     "node_modules"
   ]
