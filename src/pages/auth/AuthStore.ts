@@ -1,7 +1,8 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
+import { Module, VuexModule, Mutation, Action } from 'vuex-class-modules'
 import http from '@/services/http/auth/AuthService'
 import { IUser } from '@/pages/auth/UserType'
 import { IUserRegisterResponse } from '@/pages/auth/IUserRegisterResponse'
+import { store } from "@/store/MainStore";
 
 @Module
 export default class AuthModule extends VuexModule {
@@ -11,8 +12,8 @@ export default class AuthModule extends VuexModule {
         token: '',
         expiresIn: '',
         userId: '',
-
     }
+
     @Mutation
     setUser(userData: IUserRegisterResponse) {
         this.userData.token = userData.token,
@@ -25,7 +26,7 @@ export default class AuthModule extends VuexModule {
         http.signUpAndLogin(userData,this.signUpHref).then(response => {
             if (response.status < 300 && response.status >= 200) {
                 console.log(response);
-                this.context.commit('setUser', {
+                this.setUser({
                     token: response.data.idToken,
                     expiresIn: response.data.expiresIn,
                     userId: response.data.localId
@@ -38,8 +39,8 @@ export default class AuthModule extends VuexModule {
         http.signUpAndLogin(userData,this.logInHref).then(response => {
             if (response.status < 300 && response.status >= 200) {
                 console.log(response);
-                
-                this.context.commit('setUser', {
+
+                this.setUser({
                     token: response.data.idToken,
                     expiresIn: response.data.expiresIn,
                     userId: response.data.localId
@@ -47,7 +48,6 @@ export default class AuthModule extends VuexModule {
             }
         })
     }
-
-
-
 }
+
+export const authStore = new AuthModule({ store , name : 'AuthStore'})
