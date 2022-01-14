@@ -29,10 +29,10 @@
 <script>
 import { ref } from "vue";
 export default {
-  setup(props,context) {
-    const filterList = ref(['frontend','backend','career'])
+  setup(props, context) {
+    const filterList = ref(["frontend", "backend", "career"]);
     const cangeFilters = () => {
-    context.emit('changeFilter',filterList.value)
+      context.emit("changeFilter", filterList.value);
     };
     return {
       filterList,

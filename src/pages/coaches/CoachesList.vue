@@ -1,5 +1,8 @@
 <template>
   <el-button @click="refreshList">TEST</el-button>
+  <el-button>
+    <router-link to="/register"> Register new Coach </router-link>
+  </el-button>
   <coach-filter @changeFilter="setFilters"></coach-filter>
   <ul v-if="coachesList.length > 0">
     <coach-item

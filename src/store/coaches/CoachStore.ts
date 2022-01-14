@@ -1,6 +1,7 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import http from '@/services/http/couches/CouchesService'
 import { ICoach } from '@/pages/coaches/CoachType'
+import { store } from '@/store/MainStore'
 @Module
 export default class CoachesModule extends VuexModule {
     coachesList: ICoach[] = [
@@ -25,7 +26,7 @@ export default class CoachesModule extends VuexModule {
     ]
 
     get coaches() {
-        return this.coachesList
+        return this.coachesList 
     }
 
     @Mutation
@@ -36,7 +37,6 @@ export default class CoachesModule extends VuexModule {
     getCoaches() {
         http.getData()
             .then((data: any) => {
-                console.log(data.data);
                 this.context.commit('setCoaches', data.data)
             })
     }
@@ -46,6 +46,6 @@ export default class CoachesModule extends VuexModule {
     }
 
 
-
 }
+export const coachStore = new CoachesModule({ store , name : 'CoachStore'})
 
