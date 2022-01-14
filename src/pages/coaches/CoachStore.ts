@@ -1,10 +1,12 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
+import { Action, Module, Mutation, VuexModule } from 'vuex-class-modules'
+
 import http from '@/services/http/couches/CouchesService'
 import { ICoach } from '@/pages/coaches/CoachType'
 import { store } from '@/store/MainStore'
+
 @Module
-export default class CoachesModule extends VuexModule {
-    coachesList: ICoach[] = [
+class CoachesModule extends VuexModule {
+    coaches: ICoach[] = [
         // {
         //     id: 'c1',
         //     firstName: 'Maximilian',
@@ -25,27 +27,33 @@ export default class CoachesModule extends VuexModule {
         // }
     ]
 
-    get coaches() {
-        return this.coachesList 
+    get hashedCoaches () {
+        return this.coaches.reduce((acc, coach) => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            acc[coach.id] = coach
+            return acc
+        }, {})
     }
 
     @Mutation
     setCoaches(data: ICoach[]) {
-        this.coachesList = data;
+        this.coaches = data;
     }
-    @Action({ rawError: true })
+
+    @Action
     getCoaches() {
         http.getData()
             .then((data: any) => {
-                this.context.commit('setCoaches', data.data)
+                this.setCoaches(data.data)
             })
     }
-    @Action({ rawError: true })
+
+    @Action
     setCoach(coach: ICoach) {
         http.setCoach(coach)
     }
-
-
 }
+
 export const coachStore = new CoachesModule({ store , name : 'CoachStore'})
 

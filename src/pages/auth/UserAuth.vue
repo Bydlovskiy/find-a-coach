@@ -11,6 +11,7 @@
       <el-form-item label="email" :prop="loginForm.data.email.prop">
         <el-input v-model.trim="authForm.email" type="email"></el-input>
       </el-form-item>
+
       <el-form-item label="password" :prop="loginForm.data.password.prop">
         <el-input
           v-model.trim="authForm.password"
@@ -19,6 +20,7 @@
           show-password
         ></el-input>
       </el-form-item>
+
       <el-button @click="submitUser">{{ submitButton }}</el-button>
       <el-button @click="changeMode">{{ changeModeButton }}</el-button>
     </el-form>
@@ -34,57 +36,44 @@ export default defineComponent( {
   setup() {
     const loginForm = useFormConfig({
       email: {
-        label: "email error",
+        label: "Email",
         message: "email error",
         required: true,
         type: "email",
       },
       password: {
-        label: "password error",
+        label: "Password",
         message: "password error",
         required: true,
         type: "string",
       },
     });
+
     const mode = ref("login");
+
     const authForm = reactive({
       email: "",
       password: "",
     });
+
     const submitButton = computed(() => {
-      if (mode.value === "login") {
-        return "LogIn";
-      } else {
-        return "Register";
-      }
+      return mode.value === "login" ? "LogIn" : "Register"
     });
+
     const changeModeButton = computed(() => {
-      if (mode.value === "login") {
-        return "SignUn";
-      } else {
-        return "Login";
-      }
+      return mode.value === "login" ? "SignUn" : "Login"
     });
+
     const changeMode = () => {
       mode.value === "login" ? (mode.value = "sigUp") : (mode.value = "login");
     };
-    // const rules = reactive({
-    //   email: {
-    //     type: "string",
-    //     required: true,
-    //   },
 
-    //   password: {
-    //     type: "string",
-    //     required: true,
-    //   },
-    // });
      const submitUser = async () => {
+      await loginForm.validate()
+
       if (mode.value === "login") {
-        await loginForm.validate()
         store.dispatch("logIn", authForm);
       } else {
-        await loginForm.validate()
         store.dispatch("signUp", authForm);
       }
     };
@@ -101,4 +90,3 @@ export default defineComponent( {
   },
 });
 </script>
-    
