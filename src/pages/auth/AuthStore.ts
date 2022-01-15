@@ -1,6 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-class-modules'
 import http from '@/services/http/auth/AuthService'
-import { IUser } from '@/pages/auth/UserType'
+import { IUser } from '@/pages/auth/IUserType'
 import { IUserRegisterResponse } from '@/pages/auth/IUserRegisterResponse'
 import { store } from "@/store/MainStore";
 
@@ -11,7 +11,7 @@ export default class AuthModule extends VuexModule {
     userData: IUserRegisterResponse = {
         token: '',
         expiresIn: '',
-        userId: '',
+        userId:  '',
     }
 
     @Mutation
@@ -36,10 +36,10 @@ export default class AuthModule extends VuexModule {
     }
     @Action
     logIn(userData: IUser){
-        http.signUpAndLogin(userData,this.logInHref).then(response => {
+        http.signUpAndLogin(userData,this.logInHref)
+            .then(response => {
             if (response.status < 300 && response.status >= 200) {
                 console.log(response);
-
                 this.setUser({
                     token: response.data.idToken,
                     expiresIn: response.data.expiresIn,

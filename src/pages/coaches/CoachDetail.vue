@@ -29,9 +29,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
-import { coachStore} from "@/store";
-
+import { computed, defineComponent , ref } from "vue";
+import { coachStore} from "./CoachStore";
 import { ICoach } from "@/pages/coaches/CoachType";
 
 export default defineComponent({
@@ -43,17 +42,22 @@ export default defineComponent({
   },
 
   setup(props) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const selectedCoach = coachStore.hashedCoaches[props.id] as ICoach
+    const refreshList = async () => {
+      await coachStore.getCoaches();
 
-    const fullName = computed(
-      () => selectedCoach.firstName + " " + selectedCoach.lastName
-    );
+    };
 
-    const hourlyRate = computed(() => selectedCoach.hourlyRate);
-    const areas = computed(() => selectedCoach.areas);
-    const description = computed(() => selectedCoach.description);
+    const selectedCoach : any = computed(() => coachStore.hashedCoaches[props.id]) ;
+
+    const fullName = computed(() =>  selectedCoach.value.firstName + ' ' + selectedCoach.value.lastName );
+
+    const hourlyRate = computed(() => selectedCoach.value.hourlyRate);
+
+    const areas = computed(() => selectedCoach.value.areas);
+
+    const description = computed(() => selectedCoach.value.description);
+
+    refreshList();
 
     return {
       selectedCoach,

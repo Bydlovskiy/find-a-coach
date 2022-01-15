@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import CoachesList from '../pages/coaches/CoachesList.vue'
 import CoachesDetail from '../pages/coaches/CoachDetail.vue'
-import CoachesContact from '../pages/messages/CoachContact.vue'
+import MessageRequest from '../pages/messages/MessageRequest.vue'
 import UserAuth from '../pages/auth/UserAuth.vue'
 import MessagesList from '../pages/messages/MessagesList.vue'
 import CoachRegister from '../pages/coaches/CoachRegister.vue'
@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/coaches', component: CoachesList },
   {
     path: '/coaches/:id', component: CoachesDetail, props : true, children: [
-      { path: 'contact', component: CoachesContact }
+      { path: 'contact', component: MessageRequest, props : true, }
     ]
   },
   { path: '/user-auth', component: UserAuth },

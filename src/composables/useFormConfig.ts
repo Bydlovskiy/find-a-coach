@@ -124,7 +124,7 @@ export function useFormConfig<T extends string>(form: { [key in T]: {
             return Promise.resolve(res)
         }).catch(err => {
             ElMessage.closeAll()
-            ElMessage.error('One or more required fields are invalid.')
+            // ElMessage.error('One or more required fields are invalid.')
             return Promise.reject(err)
         })
     }

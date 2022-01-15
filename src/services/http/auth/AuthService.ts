@@ -1,5 +1,5 @@
 import auth from '../AxiosAuth'
-import { IUser } from '@/pages/auth/UserType'
+import { IUser } from '@/pages/auth/IUserType'
 
 export default {
     apiKey: 'AIzaSyCvYGKKzHi0w8PmgXktVeNaP0ulu5LONOo',

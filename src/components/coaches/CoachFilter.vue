@@ -26,9 +26,9 @@
   </el-card>
 </template>
 
-<script>
-import { ref } from "vue";
-export default {
+<script lang="ts">
+import { ref, defineComponent } from "vue";
+export default defineComponent({
   setup(props, context) {
     const filterList = ref(["frontend", "backend", "career"]);
     const cangeFilters = () => {
@@ -39,5 +39,5 @@ export default {
       cangeFilters,
     };
   },
-};
+});
 </script>

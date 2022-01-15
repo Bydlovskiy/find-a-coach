@@ -22,6 +22,7 @@ import { computed, ref, defineComponent } from "vue";
 import { coachStore } from "@/store";
 
 import CoachItem from "@/components/coaches/CoachItem.vue";
+
 import CoachFilter from "@/components/coaches/CoachFilter.vue";
 
 export default defineComponent({
@@ -33,7 +34,7 @@ export default defineComponent({
   setup() {
     let filters = ref(["frontend", "backend", "career"]);
 
-    const coachesList = computed(() => {
+    const coachesList = ref(computed(() => {
       return [...Object.values(coachStore.coaches)]
         .filter((coach) => {
           if (filters.value.includes("frontend") && coach.areas.includes("frontend")) {
@@ -43,10 +44,9 @@ export default defineComponent({
           } else if (filters.value.includes("career") && coach.areas.includes("career")) {
             return true;
           }
-
           return false;
         });
-    });
+    }));
 
     const refreshList = async () => {
       await coachStore.getCoaches()

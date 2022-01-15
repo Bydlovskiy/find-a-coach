@@ -6,3 +6,4 @@ export interface ICoach {
     description:string,
     hourlyRate: number
 }
+
