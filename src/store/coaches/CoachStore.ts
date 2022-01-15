@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Module, VuexModule, Mutation, Action } from 'vuex-class-modules'
+=======
+import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
+>>>>>>> origin/develop
 import http from '@/services/http/couches/CouchesService'
 import { ICoach } from '@/pages/coaches/CoachType'
 import { store } from '@/store/MainStore'
@@ -26,13 +30,18 @@ export default class CoachesModule extends VuexModule {
     ]
 
     get coaches() {
+<<<<<<< HEAD
         return this.coachesList
+=======
+        return this.coachesList 
+>>>>>>> origin/develop
     }
 
     @Mutation
     setCoaches(data: ICoach[]) {
         this.coachesList = data;
     }
+<<<<<<< HEAD
     @Action
     getCoaches() {
         http.getData()
@@ -41,11 +50,25 @@ export default class CoachesModule extends VuexModule {
             })
     }
     @Action
+=======
+    @Action({ rawError: true })
+    getCoaches() {
+        http.getData()
+            .then((data: any) => {
+                this.context.commit('setCoaches', data.data)
+            })
+    }
+    @Action({ rawError: true })
+>>>>>>> origin/develop
     setCoach(coach: ICoach) {
         http.setCoach(coach)
     }
 
 
 }
+<<<<<<< HEAD
 export const coachStore = new CoachesModule({ store, name: 'CoachStore' })
+=======
+export const coachStore = new CoachesModule({ store , name : 'CoachStore'})
+>>>>>>> origin/develop
 
