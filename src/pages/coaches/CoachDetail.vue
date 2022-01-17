@@ -1,19 +1,19 @@
 <template>
   <router-view></router-view>
 
-  <el-card class="w-full my-4">
+  <el-card class="w-6/12 my-4">
     <h1>{{ fullName }}</h1>
     <h3>${{ hourlyRate }}/hour</h3>
   </el-card>
 
-  <el-card class="w-full my-4">
+  <el-card class="w-6/12 my-4">
     <p>Interested? Rich out now</p>
     <el-button>
       <router-link :to="`/coaches/${id}/contact`">Contact</router-link>
     </el-button>
   </el-card>
 
-  <el-card class="w-full my-4">
+  <el-card class="w-6/12 my-4">
     <div class="flex">
       <div
         v-for="area in areas"
@@ -23,15 +23,15 @@
         <span class="font-serif font-normal">{{ area }}</span>
       </div>
     </div>
-
     <p>{{ description }}</p>
   </el-card>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent , ref } from "vue";
+
+import { computed, defineComponent } from "vue";
+
 import { coachStore} from "./CoachStore";
-import { ICoach } from "@/pages/coaches/CoachType";
 
 export default defineComponent({
   props: {
@@ -42,10 +42,6 @@ export default defineComponent({
   },
 
   setup(props) {
-    const refreshList = async () => {
-      await coachStore.getCoaches();
-
-    };
 
     const selectedCoach : any = computed(() => coachStore.hashedCoaches[props.id]) ;
 
@@ -56,8 +52,6 @@ export default defineComponent({
     const areas = computed(() => selectedCoach.value.areas);
 
     const description = computed(() => selectedCoach.value.description);
-
-    refreshList();
 
     return {
       selectedCoach,

@@ -1,28 +1,29 @@
 import {Action, Module, Mutation, VuexModule} from 'vuex-class-modules'
+
 import {store} from "@/store/MainStore";
-import {authStore} from '@/pages/auth/AuthStore'
-import http from '@/services/http/messages/MessagesService'
+
+import { messagesService } from '@/services/http'
 
 @Module
 class MessagesModule extends VuexModule {
-    messages: any = {}
+    messages: any = [];
 
     @Mutation
     saveMessages(data: any) {
-        ''
+        this.messages = [...Object.values(data)]
     }
 
     @Action
     getMessages(id: string) {
-        http.getMessages(id).then(response => {
-            console.log(response)
+        messagesService.getMessages(id).then(response => {
+            this.saveMessages(response.data);
         })
     }
 
     @Action
     setMessage(message: any) {
         const requestData = {message: message.message, email: message.email};
-        http.setMessage(requestData , message.coachId)
+        messagesService.setMessage( requestData , message.coachId )
             .then(response => this.getMessages(message.coachId))
     }
 

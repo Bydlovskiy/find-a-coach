@@ -1,18 +1,33 @@
 <template>
   <the-header/>
 
-  <el-card class="flex flex-col items-center min-h-4/5 m-10">
+  <div class="flex flex-col items-center min-h-4/5 m-10">
     <router-view></router-view>
-  </el-card>
+  </div>
 </template>
 
-<script>
-import TheHeader from "./components/layouts/TheHeader.vue";
-export default {
+<script lang="ts">
+
+import { defineComponent } from "vue";
+
+import TheHeader from "./layouts/TheHeader.vue";
+
+import {coachStore} from "@/pages/coaches/CoachStore";
+
+export default defineComponent ({
   components: {
     TheHeader,
   },
-};
+  setup(){
+
+    const refreshList =  () => {
+      coachStore.getCoaches();
+    };
+
+    refreshList()
+
+  }
+});
 </script>
 
 

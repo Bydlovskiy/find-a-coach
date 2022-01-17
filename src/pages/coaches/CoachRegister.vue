@@ -1,5 +1,6 @@
 <template>
-  <el-card>
+  <span class="text-4xl font-bold">Register a coach</span>
+  <el-card class="w-6/12 mt-4">
     <el-form
         :ref="registerForm.ref"
         :model="coachForm"
@@ -27,7 +28,7 @@
             type="textarea"
         ></el-input>
       </el-form-item>
-      <el-button @click="submit">rewerwer</el-button>
+      <el-button size="large" type="primary" @click="submit">Regsiter</el-button>
     </el-form>
   </el-card>
 </template>
@@ -41,6 +42,8 @@ import {useFormConfig} from "@/composables/useFormConfig";
 import {coachStore} from "@/store";
 
 import router from "@/router";
+
+import {ElNotification} from "element-plus";
 
 export default defineComponent({
   setup() {
@@ -62,7 +65,8 @@ export default defineComponent({
         label: "Areas",
         message: "Choose at least one area",
         required: true,
-        type: "array"
+        type: "array",
+        trigger: "change"
       },
       hourlyRate: {
         label: "Hourly rate",
@@ -89,8 +93,20 @@ export default defineComponent({
     const submit = async () => {
       await registerForm.validate().then(() => {
         coachStore.setCoach(coachForm);
+        ElNotification.success({
+          title: 'Success',
+          message: 'You added proposition!',
+          position: 'bottom-right'
+        })
       }).then(() => {
-        router.push('./coaches')
+        router.push('/coaches')
+      }).catch(() => {
+        ElNotification.error({
+              title: 'Error',
+              message: 'Something is wrong, please check your form.',
+          position: 'bottom-right'
+            }
+        )
       });
     }
 

@@ -1,13 +1,13 @@
 <template>
-  <el-button @click="refreshList">TEST</el-button>
+  <div class="flex ">
+    <el-button @click="refreshList">Refresh list</el-button>
+    <el-button v-if="isLogin && !isRegistered">
+      <router-link to="/register"> Register new Coach </router-link>
+    </el-button>
 
-  <el-button>
-    <router-link to="/register"> Register new Coach </router-link>
-  </el-button>
-
-  <coach-filter @changeFilter="setFilters"></coach-filter>
-
-  <ul v-if="coachesList.length > 0">
+  </div>
+  <coach-filter class="mt-4" @changeFilter="setFilters"></coach-filter>
+  <ul class="w-6/12" v-if="coachesList.length > 0">
     <coach-item
       v-for="coach in coachesList"
       :key="coach.id"
@@ -18,8 +18,12 @@
 </template>
 
 <script lang="ts">
+
 import { computed, ref, defineComponent } from "vue";
+
 import { coachStore } from "@/store";
+
+import { authStore } from "@/store";
 
 import CoachItem from "@/components/coaches/CoachItem.vue";
 
@@ -34,8 +38,12 @@ export default defineComponent({
   setup() {
     let filters = ref(["frontend", "backend", "career"]);
 
+    const isLogin = computed(() => !!authStore.userData.token);
+
+    const isRegistered = computed(() => coachesList.value.some(coach => coach.id === authStore.userData.userId))
+
     const coachesList = ref(computed(() => {
-      return [...Object.values(coachStore.coaches)]
+      return coachStore.coaches
         .filter((coach) => {
           if (filters.value.includes("frontend") && coach.areas.includes("frontend")) {
             return true;
@@ -62,6 +70,8 @@ export default defineComponent({
       coachesList,
       refreshList,
       setFilters,
+      isLogin ,
+      isRegistered
     };
   },
 });

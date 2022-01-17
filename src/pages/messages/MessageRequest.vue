@@ -1,6 +1,5 @@
 <template>
-<!--  <el-button plain @click="open1"> Closes automatically </el-button>-->
-  <el-card>
+  <el-card class="w-6/12">
     <el-form
         class="demo-ruleForm w-full"
         :ref="messageForm.ref"
@@ -31,12 +30,13 @@
 
 <script lang="ts">
 
-import {defineComponent, reactive, ref} from "vue";
+import {defineComponent, reactive} from "vue";
 
 import {useFormConfig} from "@/composables/useFormConfig";
-import  { messagesStore } from './MessagesStore'
 
-import { ElNotification , ElButton } from 'element-plus'
+import {messagesStore} from './MessagesStore'
+
+import {ElNotification} from "element-plus";
 
 export default defineComponent({
 
@@ -48,14 +48,6 @@ export default defineComponent({
   },
 
   setup(props) {
-
-    // const open1 = () => {
-    //   ElNotification.success({
-    //     title: 'Success',
-    //     message: 'This is a success message',
-    //     type: 'success',
-    //   })
-    // }
 
     const messageForm = useFormConfig({
       email: {
@@ -78,17 +70,29 @@ export default defineComponent({
     });
 
     const submitMessage = async () => {
-      await messageForm.validate()
-      messagesStore.setMessage({...form ,coachId : props.id} );
-      messageForm.resetFields()
+      try {
+        await messageForm.validate()
+        messagesStore.setMessage({...form, coachId: props.id});
+        messageForm.resetFields();
+        ElNotification.success({
+          title: 'Success',
+          message: 'Message was sent',
+          position: 'bottom-right'
+        })
+      } catch (err) {
+        ElNotification.error({
+              title: 'Error',
+              message: "Message wasn't sent",
+              position: 'bottom-right'
+            }
+        )
+      }
     };
 
     return {
       submitMessage,
       form,
-      messageForm,
-      // open1,
-      // ElButton
+      messageForm
     }
 
   }

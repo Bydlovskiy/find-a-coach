@@ -1,74 +1,61 @@
-<<<<<<< HEAD
-import { Module, VuexModule, Mutation, Action } from 'vuex-class-modules'
-=======
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
->>>>>>> origin/develop
-import http from '@/services/http/couches/CouchesService'
-import { ICoach } from '@/pages/coaches/CoachType'
-import { store } from '@/store/MainStore'
-@Module
-export default class CoachesModule extends VuexModule {
-    coachesList: ICoach[] = [
-        // {
-        //     id: 'c1',
-        //     firstName: 'Maximilian',
-        //     lastName: 'Schwarzmüller',
-        //     areas: ['frontend', 'backend', 'career'],
-        //     description:
-        //         "I'm Maximilian and I've worked as a freelance web developer for years. Let me help you become a developer as well!",
-        //     hourlyRate: 30
-        // },
-        // {
-        //     id: 'c2',
-        //     firstName: 'Julie',
-        //     lastName: 'Jones',
-        //     areas: ['frontend', 'career'],
-        //     description:
-        //         'I am Julie and as a senior developer in a big tech company, I can help you get your first job or progress in your current role.',
-        //     hourlyRate: 30
-        // }
-    ]
+import {Action, Module, Mutation, VuexModule} from 'vuex-class-modules'
+import http from '@/services/http/coaches/CoachesService'
+import {ICoach} from '@/pages/coaches/CoachType'
+import {authStore} from '@/pages/auth/AuthStore'
+import {store} from "@/store/MainStore";
 
-    get coaches() {
-<<<<<<< HEAD
-        return this.coachesList
-=======
-        return this.coachesList 
->>>>>>> origin/develop
+
+@Module
+class CoachesModule extends VuexModule {
+    coaches: ICoach[] = []
+    setError = false;
+    // {
+    //     id: 'c1',
+    //     firstName: 'Maximilian',
+    //     lastName: 'Schwarzmüller',
+    //     areas: ['frontend', 'backend', 'career'],
+    //     description:
+    //         "I'm Maximilian and I've worked as a freelance web developer for years. Let me help you become a developer as well!",
+    //     hourlyRate: 30
+    // },
+    // {
+    //     id: 'c2',
+    //     firstName: 'Julie',
+    //     lastName: 'Jones',
+    //     areas: ['frontend', 'career'],
+    //     description:
+    //         'I am Julie and as a senior developer in a big tech company, I can help you get your first job or progress in your current role.',
+    //     hourlyRate: 30
+    // }
+
+
+    get hashedCoaches() {
+        return this.coaches
+            .reduce((acc: any, coach) => {
+                acc[coach.id] = coach
+                return acc
+            }, {})
     }
 
     @Mutation
     setCoaches(data: ICoach[]) {
-        this.coachesList = data;
+        this.coaches = [...data];
     }
-<<<<<<< HEAD
+
     @Action
     getCoaches() {
         http.getData()
             .then((data: any) => {
-                this.setCoaches(data.data)
+                this.setCoaches(Object.values(data.data))
             })
     }
+
     @Action
-=======
-    @Action({ rawError: true })
-    getCoaches() {
-        http.getData()
-            .then((data: any) => {
-                this.context.commit('setCoaches', data.data)
-            })
+    setCoach(coach: any) {
+        http.setCoach({...coach, id: authStore.userData.userId})
+            .then(() => this.getCoaches())
+            .catch(() => this.setError = true)
     }
-    @Action({ rawError: true })
->>>>>>> origin/develop
-    setCoach(coach: ICoach) {
-        http.setCoach(coach)
-    }
-
-
 }
-<<<<<<< HEAD
-export const coachStore = new CoachesModule({ store, name: 'CoachStore' })
-=======
-export const coachStore = new CoachesModule({ store , name : 'CoachStore'})
->>>>>>> origin/develop
 
+export const coachStore = new CoachesModule({store, name: 'CoachStore'})
