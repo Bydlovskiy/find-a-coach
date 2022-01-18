@@ -1,6 +1,6 @@
 import http from '../MainAxios'
 
-import { ICoach } from '@/pages/coaches/CoachType'
+import { ICoachResponse} from '@/pages/coaches/ICoachType'
 
 import {authStore} from "@/pages/auth/AuthStore";
 
@@ -10,7 +10,7 @@ class CoachesService {
         return http.get('/coaches.json')
     }
 
-    setCoach(coach: ICoach) {
+    setCoach(coach: ICoachResponse) {
         return http.post(`/coaches/${coach.id}.json?auth=${authStore.userData.token}`, coach)
     }
 

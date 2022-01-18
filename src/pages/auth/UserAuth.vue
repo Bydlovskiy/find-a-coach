@@ -1,7 +1,7 @@
 <template>
 
   <h1 class="text-4xl font-bold">
-    {{ submitButton }}
+    {{ submitButtonText }}
   </h1>
 
   <el-card class="w-6/12 mt-4 flex justify-center  ">
@@ -30,8 +30,8 @@
         ></el-input>
       </el-form-item>
       <div class="flex justify-between">
-        <el-button size="small"  @click="changeMode">{{ changeModeButton }}</el-button>
-        <el-button type="primary" @click="submitUser">{{ submitButton }}</el-button>
+        <el-button size="small" @click="changeMode">{{ changeModeButton }}</el-button>
+        <el-button type="primary" @click="submitUser">{{ submitButtonText }}</el-button>
 
       </div>
     </el-form>
@@ -47,8 +47,10 @@ import {authStore} from "./AuthStore";
 import {useFormConfig} from "@/composables/useFormConfig";
 
 import {ElNotification} from "element-plus";
+
 import router from "@/router";
 
+import {routeNames} from "@/router/Route.names";
 
 export default defineComponent({
   setup() {
@@ -74,77 +76,41 @@ export default defineComponent({
     });
 
     const submitUser = async () => {
-
-      await loginForm.validate().then(() => {
-        if (mode.value === "login") {
-          authStore.logIn(authForm)
-              .then(response => {
-                authStore.setUser({
-                  token: response.data.idToken,
-                  expiresIn: response.data.expiresIn,
-                  userId: response.data.localId
-                });
+      await loginForm.validate()
+          .then(() => {
+            if (mode.value === "login") {
+              authStore.logIn(authForm)
+                  .then(() => {
+                    loginForm.resetFields();
+                    router.push(routeNames.coachesList)
+                  }).catch(() => {
                 loginForm.resetFields();
-                ElNotification.success({
-                  title: 'Success',
-                  message: 'You logined successfully!',
-                  position: 'bottom-right'
-                });
-                router.push('/coaches')
-              }).catch(() => {
+              });
+            } else {
+              authStore.signUp(authForm)
+                  .then(() => {
+                    loginForm.resetFields();
+                    mode.value = 'login';
+                  }).catch(() => {
+                loginForm.resetFields();
+              })
+            }
+          }).catch(() => {
             loginForm.resetFields();
             ElNotification.error(
                 {
                   title: 'Error',
-                  message: 'Something was wrong.Try again.',
+                  message: 'You form is invalid!',
                   position: 'bottom-right'
                 }
             )
           });
-
-        } else {
-
-          authStore.signUp(authForm)
-              .then(response => {
-                // authStore.setUser({
-                //   token: response.data.idToken,
-                //   expiresIn: response.data.expiresIn,
-                //   userId: response.data.localId
-                // });
-                console.log(authStore.userData)
-                loginForm.resetFields();
-                ElNotification.success({
-                  title: 'Success',
-                  message: 'You registered successfully!',
-                  position: 'bottom-right'
-                });
-                mode.value = 'login';
-              }).catch(() => {
-            loginForm.resetFields();
-            ElNotification.error(
-                {
-                  title: 'Error',
-                  message: 'Something was wrong.Try again.',
-                  position: 'bottom-right'
-                }
-            )
-          })
-        }
-      }).catch(() => {
-        loginForm.resetFields();
-        ElNotification.error(
-            {
-              title: 'Error',
-              message: 'You form is invalid!',
-              position: 'bottom-right'
-            }
-        )
-      });
     };
+
 
     const mode = ref("login");
 
-    const submitButton = computed(() => {
+    const submitButtonText = computed(() => {
       return mode.value === "login" ? "LogIn" : "Register"
     });
 
@@ -162,7 +128,7 @@ export default defineComponent({
       loginForm,
       changeMode,
       mode,
-      submitButton,
+      submitButtonText,
       changeModeButton,
     };
   },

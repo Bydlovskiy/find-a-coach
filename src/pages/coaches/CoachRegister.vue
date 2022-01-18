@@ -23,7 +23,7 @@
       </el-form-item>
       <el-form-item label="Description" :prop="registerForm.data.description.prop">
         <el-input
-            v-model.trim="coachForm.description"
+            v-model="coachForm.description"
             autosize
             type="textarea"
         ></el-input>
@@ -44,6 +44,8 @@ import {coachStore} from "@/store";
 import router from "@/router";
 
 import {ElNotification} from "element-plus";
+
+import {routeNames} from "@/router/Route.names";
 
 export default defineComponent({
   setup() {
@@ -99,7 +101,7 @@ export default defineComponent({
           position: 'bottom-right'
         })
       }).then(() => {
-        router.push('/coaches')
+        router.push(routeNames.coachesList)
       }).catch(() => {
         ElNotification.error({
               title: 'Error',

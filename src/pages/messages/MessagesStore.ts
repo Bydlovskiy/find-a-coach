@@ -2,11 +2,15 @@ import {Action, Module, Mutation, VuexModule} from 'vuex-class-modules'
 
 import {store} from "@/store/MainStore";
 
-import { messagesService } from '@/services/http'
+import {messagesService} from '@/services/http'
+
+import {ElNotification} from "element-plus/es";
+import { IMessageRequest , IMessageResponse } from "@/pages/messages/IMessageType";
 
 @Module
 class MessagesModule extends VuexModule {
-    messages: any = [];
+
+    messages: IMessageResponse[] | any = [];
 
     @Mutation
     saveMessages(data: any) {
@@ -15,16 +19,36 @@ class MessagesModule extends VuexModule {
 
     @Action
     getMessages(id: string) {
-        messagesService.getMessages(id).then(response => {
-            this.saveMessages(response.data);
-        })
+        return messagesService.getMessages(id)
+            .then(response => {
+                if (response.data === null) {
+                    console.log('empty')
+                } else {
+                    this.saveMessages(Object.values(response.data));
+                }
+            }).catch(() => {
+                ElNotification.error({
+                        title: 'Error',
+                        message: 'Something is wrong, please try again later.',
+                        position: 'bottom-right'
+                    }
+                )
+            })
     }
 
     @Action
-    setMessage(message: any) {
+    setMessage(message : IMessageRequest) {
         const requestData = {message: message.message, email: message.email};
-        messagesService.setMessage( requestData , message.coachId )
-            .then(response => this.getMessages(message.coachId))
+        messagesService.setMessage(requestData, message.coachId)
+            .then(() => this.getMessages(message.coachId))
+            .catch(() => {
+                ElNotification.error({
+                        title: 'Error',
+                        message: 'Something is wrong, please try again later.',
+                        position: 'bottom-right'
+                    }
+                )
+            })
     }
 
 }

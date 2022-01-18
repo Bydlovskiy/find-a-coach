@@ -14,17 +14,22 @@ import TheHeader from "./layouts/TheHeader.vue";
 
 import {coachStore} from "@/pages/coaches/CoachStore";
 
+import {authStore} from "@/pages/auth/AuthStore";
+
 export default defineComponent ({
   components: {
     TheHeader,
   },
   setup(){
-
+    const tryLogin = () => {
+      authStore.trylogin()
+    }
     const refreshList =  () => {
       coachStore.getCoaches();
     };
+    refreshList();
+    tryLogin();
 
-    refreshList()
 
   }
 });

@@ -1,29 +1,36 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
+import {routeGuards} from "@/router/Route.guards";
 import CoachesList from '../pages/coaches/CoachesList.vue'
 import CoachesDetail from '../pages/coaches/CoachDetail.vue'
-import MessageRequest from '../pages/messages/MessageRequest.vue'
+import CoachesContact from '../pages/coaches/CoachesContact.vue'
 import UserAuth from '../pages/auth/UserAuth.vue'
 import MessagesList from '../pages/messages/MessagesList.vue'
 import CoachRegister from '../pages/coaches/CoachRegister.vue'
-import WrongPath from '../pages/error/WrongPath.vue'
+
+import {routeNames} from "@/router/Route.names";
+
 
 const routes: Array<RouteRecordRaw> = [
-    {path: '/', redirect: '/coaches'},
-    {path: '/coaches', component: CoachesList},
+    {path: '/', redirect: routeNames.coachesList},
+    {path: routeNames.coachesList, component: CoachesList},
     {
-        path: '/coaches/:id', component: CoachesDetail, props: true, children: [
-            {path: 'contact', component: MessageRequest, props: true,}
+        path: routeNames.coachDetail, component: CoachesDetail, props: true, children: [
+            {path: routeNames.coachContact, component: CoachesContact, props: true,}
         ]
     },
-    {path: '/user-auth', component: UserAuth},
-    {path: '/messages', component: MessagesList},
-    {path: '/register', component: CoachRegister},
-    {path: '/:somethingWrong(.*)', component: WrongPath}
+    {path: routeNames.auth, component: UserAuth, meta: {dontNeedAuth: true}},
+    {path: routeNames.messageList, component: MessagesList, meta: {needAuth: true}},
+    {path: routeNames.coachRegister, component: CoachRegister, meta: {needAuth: true}},
+    {path: routeNames.wrongPath, redirect: routeNames.coachesList},
 ]
+
 
 const router = createRouter({
     history: createWebHistory(),
     routes
-})
+});
+
+router.beforeEach(routeGuards);
+
 
 export default router

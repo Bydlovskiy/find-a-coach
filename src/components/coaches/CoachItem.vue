@@ -10,17 +10,19 @@
         <span class="font-serif font-normal">{{ area }}</span>
       </div>
     </div>
-    <div>
+    <div class="flex">
       <el-button v-if="!isYour">
         <router-link :to="`/coaches/${coach.id}/contact`"
         >Contact with coach
         </router-link
         >
       </el-button>
-      <el-button type="danger" v-else @click="deleteOffer">
-        Delete offer
-      </el-button>
-      <el-button>
+      <div v-else>
+        <el-button type="danger"  @click="deleteOffer">
+          Delete offer
+        </el-button>
+      </div>
+      <el-button class="ml-3">
         <router-link :to="`/coaches/${coach.id}`">Coach detail</router-link>
       </el-button>
     </div>
@@ -29,11 +31,11 @@
 
 <script lang="ts">
 
-import {defineComponent , ref} from "vue";
+import {computed, defineComponent, ref} from "vue";
 
-import {authStore} from "@/pages/auth/AuthStore";
+import {authStore} from "@/store";
 
-import {coachStore} from "@/pages/coaches/CoachStore";
+import {coachStore} from "@/store";
 
 export default defineComponent({
 
@@ -46,7 +48,7 @@ export default defineComponent({
 
   setup(props){
 
-    const isYour = props.coach.id === authStore.userData.userId;
+    let isYour = computed(() => props.coach.id === authStore.userData.userId);
 
     const deleteOffer = () => {
       coachStore.deleteCoach()
@@ -54,7 +56,7 @@ export default defineComponent({
 
     return {
       isYour,
-      deleteOffer
+      deleteOffer,
     }
   }
 });

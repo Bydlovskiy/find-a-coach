@@ -2,7 +2,7 @@
   <div class="flex ">
     <el-button @click="refreshList">Refresh list</el-button>
     <el-button v-if="isLogin && !isRegistered">
-      <router-link to="/register"> Register new Coach </router-link>
+      <router-link :to="routeNames.coachRegister"> Register new Coach </router-link>
     </el-button>
 
   </div>
@@ -14,7 +14,10 @@
       :coach="coach"
     ></coach-item>
   </ul>
-  <div v-else>Empty List</div>
+  <el-card v-else class="w-6/12 mt-4 flex justify-center text-2xl font-bold" >
+    <p>Empty List</p>
+  </el-card>
+
 </template>
 
 <script lang="ts">
@@ -29,6 +32,8 @@ import CoachItem from "@/components/coaches/CoachItem.vue";
 
 import CoachFilter from "@/components/coaches/CoachFilter.vue";
 
+import {routeNames} from "@/router/Route.names";
+
 export default defineComponent({
   components: {
     CoachItem,
@@ -36,6 +41,7 @@ export default defineComponent({
   },
 
   setup() {
+
     let filters = ref(["frontend", "backend", "career"]);
 
     const isLogin = computed(() => !!authStore.userData.token);
@@ -71,7 +77,8 @@ export default defineComponent({
       refreshList,
       setFilters,
       isLogin ,
-      isRegistered
+      isRegistered,
+      routeNames
     };
   },
 });

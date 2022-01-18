@@ -16,7 +16,7 @@
       </el-form-item>
       <el-form-item label="message" :prop="messageForm.data.message.prop">
         <el-input
-            v-model.trim="form.message"
+            v-model="form.message"
             type="textarea"
             placeholder="Please input message"
             autosize
@@ -30,13 +30,14 @@
 
 <script lang="ts">
 
-import {defineComponent, reactive} from "vue";
+import {computed, defineComponent, reactive} from "vue";
 
 import {useFormConfig} from "@/composables/useFormConfig";
 
-import {messagesStore} from './MessagesStore'
+import {messagesStore} from '../messages/MessagesStore'
 
 import {ElNotification} from "element-plus";
+import {authStore} from "@/pages/auth/AuthStore";
 
 export default defineComponent({
 

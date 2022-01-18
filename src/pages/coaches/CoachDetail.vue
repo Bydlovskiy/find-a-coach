@@ -2,36 +2,38 @@
   <router-view></router-view>
 
   <el-card class="w-6/12 my-4">
-    <h1>{{ fullName }}</h1>
-    <h3>${{ hourlyRate }}/hour</h3>
+    <h1>{{ selectedFullName }}</h1>
+    <h3>${{ selectedHourlyRate }}/hour</h3>
   </el-card>
 
   <el-card class="w-6/12 my-4">
     <p>Interested? Rich out now</p>
-    <el-button>
+    <el-button v-if="!isYour">
       <router-link :to="`/coaches/${id}/contact`">Contact</router-link>
     </el-button>
   </el-card>
 
-  <el-card class="w-6/12 my-4">
+  <el-card class="w-6/12 my-4 min-h-min">
     <div class="flex">
       <div
-        v-for="area in areas"
-        :key="area"
-        class="bg-blue-600 rounded-2xl w-20 flex justify-center items-center mx-4"
+          v-for="area in selectedAreas"
+          :key="area"
+          class="bg-blue-600 rounded-2xl w-20 flex justify-center items-center mx-4"
       >
         <span class="font-serif font-normal">{{ area }}</span>
       </div>
     </div>
-    <p>{{ description }}</p>
+    <div>{{ selectedDescription }}</div>
   </el-card>
 </template>
 
 <script lang="ts">
 
-import { computed, defineComponent } from "vue";
+import {computed, defineComponent, reactive, ref} from "vue";
 
-import { coachStore} from "./CoachStore";
+import {coachStore} from "@/store";
+
+import {authStore} from "@/store";
 
 export default defineComponent({
   props: {
@@ -43,22 +45,30 @@ export default defineComponent({
 
   setup(props) {
 
-    const selectedCoach : any = computed(() => coachStore.hashedCoaches[props.id]) ;
+    const isYour = computed(() => props.id === authStore.userData.userId);
 
-    const fullName = computed(() =>  selectedCoach.value.firstName + ' ' + selectedCoach.value.lastName );
-
-    const hourlyRate = computed(() => selectedCoach.value.hourlyRate);
-
-    const areas = computed(() => selectedCoach.value.areas);
-
-    const description = computed(() => selectedCoach.value.description);
+    const getCoach = async () => {
+      await coachStore.getCoaches();
+      selectedCoach = computed(() => coachStore.hashedCoaches[props.id]);
+      const {firstName,lastName,hourlyRate,areas,description} = selectedCoach.value
+      selectedFullName.value = firstName + ' ' + lastName;
+      selectedHourlyRate.value = hourlyRate;
+      selectedAreas.value = [...areas];
+      selectedDescription.value = description;
+    };
+    getCoach();
+    let selectedCoach : any;
+    let selectedFullName = ref('');
+    let selectedHourlyRate = ref('');
+    let selectedAreas : any = ref([]);
+    let selectedDescription = ref('');
 
     return {
-      selectedCoach,
-      fullName,
-      hourlyRate,
-      areas,
-      description,
+      selectedFullName,
+      selectedHourlyRate,
+      selectedAreas,
+      selectedDescription,
+      isYour
     };
   },
 });
