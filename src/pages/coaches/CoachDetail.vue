@@ -9,7 +9,7 @@
   <el-card class="w-6/12 my-4">
     <p>Interested? Rich out now</p>
     <el-button v-if="!isYour">
-      <router-link :to="`/coaches/${id}/contact`">Contact</router-link>
+      <router-link :to="{name : globalRouteNames.coachContact, params : {id : id}}">Contact</router-link>
     </el-button>
   </el-card>
 
@@ -29,11 +29,15 @@
 
 <script lang="ts">
 
-import {computed, defineComponent, reactive, ref} from "vue";
+import {computed, ComputedRef, defineComponent, Ref, ref} from "vue";
 
 import {coachStore} from "@/store";
 
 import {authStore} from "@/store";
+
+import { ICoachResponse } from "@/pages/coaches/ICoachType";
+
+import {routeNames} from "@/router/Route.names";
 
 export default defineComponent({
   props: {
@@ -43,32 +47,35 @@ export default defineComponent({
     },
   },
 
-  setup(props) {
+  setup: function (props) {
 
     const isYour = computed(() => props.id === authStore.userData.userId);
 
     const getCoach = async () => {
       await coachStore.getCoaches();
       selectedCoach = computed(() => coachStore.hashedCoaches[props.id]);
-      const {firstName,lastName,hourlyRate,areas,description} = selectedCoach.value
+      const {firstName, lastName, hourlyRate, areas, description} = selectedCoach.value
       selectedFullName.value = firstName + ' ' + lastName;
       selectedHourlyRate.value = hourlyRate;
       selectedAreas.value = [...areas];
       selectedDescription.value = description;
     };
     getCoach();
-    let selectedCoach : any;
-    let selectedFullName = ref('');
-    let selectedHourlyRate = ref('');
-    let selectedAreas : any = ref([]);
-    let selectedDescription = ref('');
+    let selectedCoach: ComputedRef<ICoachResponse>;
+    let selectedFullName: Ref<string> = ref('');
+    let selectedHourlyRate: Ref<number | null> = ref(null);
+    let selectedAreas: Ref<string[]> = ref([]);
+    let selectedDescription: Ref<string> = ref('');
+    const globalRouteNames = routeNames
+
 
     return {
       selectedFullName,
       selectedHourlyRate,
       selectedAreas,
       selectedDescription,
-      isYour
+      isYour,
+      globalRouteNames
     };
   },
 });

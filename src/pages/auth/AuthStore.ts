@@ -6,10 +6,13 @@ import {store} from "@/store/MainStore";
 
 import {ElNotification} from "element-plus/es";
 
+import { IUserRequest} from "@/pages/auth/IUserRequestType";
+import {IUserResponse} from "@/pages/auth/IUserResponseType";
+
 @Module
 export default class AuthModule extends VuexModule {
 
-    timer: any;
+    timer: any ;
 
     isAutoLogout = false;
 
@@ -18,16 +21,16 @@ export default class AuthModule extends VuexModule {
     logInHref = 'signInWithPassword?key='
 
 
-    userData: any = {
+    userData: IUserResponse = {
         token: '',
         userId: '',
     }
 
     @Mutation
-    setUser(userData: any) {
-        this.userData.token = userData.token,
-            this.userData.userId = userData.userId,
-            this.isAutoLogout = false;
+    setUser(userData: IUserResponse) {
+        this.userData.token = userData.token;
+        this.userData.userId = userData.userId;
+        this.isAutoLogout = false;
     }
 
     @Mutation
@@ -36,7 +39,7 @@ export default class AuthModule extends VuexModule {
     }
 
     @Action
-    signUp(userData: any) {
+    signUp(userData: IUserRequest) {
         return authService.signUpAndLogin(userData, this.signUpHref)
             .then(() => {
                 ElNotification.success({
@@ -58,20 +61,18 @@ export default class AuthModule extends VuexModule {
     }
 
     @Action
-    logIn(userData: any) {
+    logIn(userData: IUserRequest) {
         return authService.signUpAndLogin(userData, this.logInHref)
             .then(response => {
                 authStore.setUser({
                     token: response.data.idToken,
                     userId: response.data.localId,
                 });
-                const expirationTime = 5000
-                // response.data.expiresIn * 1000
+                const expirationTime = response.data.expiresIn * 1000
                 const expirationDate: number = new Date().getTime() + expirationTime
                 localStorage.setItem('token', response.data.idToken);
                 localStorage.setItem('userId', response.data.localId);
                 localStorage.setItem('expiresIn', String(expirationDate));
-
                 this.timer = setTimeout(() => {
                     this.logOut();
                     this.setAutoLogout();
@@ -98,9 +99,8 @@ export default class AuthModule extends VuexModule {
     trylogin() {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
-        const expiresIn: any = localStorage.getItem('expiresIn');
-
-        const expirationDate = +expiresIn - new Date().getTime();
+        const expiresIn : string | null = localStorage.getItem('expiresIn');
+        const expirationDate = +(expiresIn as string) - new Date().getTime();
 
         if (expirationDate < 0) {
             return

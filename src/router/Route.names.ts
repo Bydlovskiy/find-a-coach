@@ -1,9 +1,9 @@
 export const routeNames = {
-    coachesList : '/coaches',
-    coachDetail : '/coaches/:id',
-    coachContact : 'contact',
-    auth : '/user-auth',
-    messageList : '/messages',
-    coachRegister : '/register',
-    wrongPath : '/:somethingWrong(.*)'
+    coachesList : 'coaches-list',
+    coachDetail : 'coach-detail',
+    coachContact : 'coach-contact',
+    auth : 'user-auth',
+    messageList : 'messages-list',
+    coachRegister : 'coach-register',
+    wrongPath : 'wrong-path'
 }

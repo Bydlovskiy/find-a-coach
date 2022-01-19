@@ -12,7 +12,7 @@
     </div>
     <div class="flex">
       <el-button v-if="!isYour">
-        <router-link :to="`/coaches/${coach.id}/contact`"
+        <router-link :to="{name : globalRouteNames.coachContact, params : {id : coach.id}}"
         >Contact with coach
         </router-link
         >
@@ -23,7 +23,7 @@
         </el-button>
       </div>
       <el-button class="ml-3">
-        <router-link :to="`/coaches/${coach.id}`">Coach detail</router-link>
+        <router-link :to="{name : globalRouteNames.coachDetail , params : {id: coach.id}}">Coach detail</router-link>
       </el-button>
     </div>
   </el-card>
@@ -31,9 +31,11 @@
 
 <script lang="ts">
 
-import {computed, defineComponent, ref} from "vue";
+import {computed, defineComponent } from "vue";
 
 import {authStore} from "@/store";
+
+import {routeNames} from "@/router/Route.names";
 
 import {coachStore} from "@/store";
 
@@ -54,9 +56,12 @@ export default defineComponent({
       coachStore.deleteCoach()
     }
 
+    const globalRouteNames = routeNames
+
     return {
       isYour,
       deleteOffer,
+      globalRouteNames
     }
   }
 });

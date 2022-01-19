@@ -10,10 +10,10 @@
       ><p class="text-4xl">Find a coach</p></router-link
       >
     </div>
-    <el-menu-item :index="routeNames.coachesList">Couches</el-menu-item>
-    <el-menu-item v-if="isLogin" :index="routeNames.messageList">Messages</el-menu-item>
-    <el-menu-item v-if="isLogin" :index="routeNames.coachesList" @click="logOut">Log Out</el-menu-item>
-    <el-menu-item v-else :index="routeNames.auth">LogIn</el-menu-item>
+    <el-menu-item :index="routeNames.coachesList" :route="{name : routeNames.coachesList}">Couches</el-menu-item>
+    <el-menu-item v-if="isLogin" :index="routeNames.messageList" :route="{name : routeNames.messageList}">Messages</el-menu-item>
+    <el-menu-item v-if="isLogin"  :index="routeNames.coachesList" :route="{name : routeNames.coachesList}" @click="logOut">Log Out</el-menu-item>
+    <el-menu-item v-else :index="routeNames.auth" :route="{name : routeNames.auth}">LogIn</el-menu-item>
 
   </el-menu>
 </template>

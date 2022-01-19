@@ -1,6 +1,5 @@
 <template>
   <the-header/>
-
   <div class="flex flex-col items-center min-h-4/5 m-10">
     <router-view></router-view>
   </div>
@@ -8,7 +7,7 @@
 
 <script lang="ts">
 
-import {defineComponent, watch, ref, computed} from "vue";
+import {defineComponent, watch, computed} from "vue";
 
 import TheHeader from "./layouts/TheHeader.vue";
 

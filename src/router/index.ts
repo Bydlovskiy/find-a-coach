@@ -11,17 +11,17 @@ import {routeNames} from "@/router/Route.names";
 
 
 const routes: Array<RouteRecordRaw> = [
-    {path: '/', redirect: routeNames.coachesList},
-    {path: routeNames.coachesList, component: CoachesList},
+    { path: '/', redirect: '/coaches'},
+    { path: '/coaches', name : routeNames.coachesList, component: CoachesList},
     {
-        path: routeNames.coachDetail, component: CoachesDetail, props: true, children: [
-            {path: routeNames.coachContact, component: CoachesContact, props: true,}
+        path: '/coaches/:id',name : routeNames.coachDetail, component: CoachesDetail, props: true, children: [
+            {path: 'contact', name:routeNames.coachContact, component: CoachesContact, props: true,}
         ]
     },
-    {path: routeNames.auth, component: UserAuth, meta: {dontNeedAuth: true}},
-    {path: routeNames.messageList, component: MessagesList, meta: {needAuth: true}},
-    {path: routeNames.coachRegister, component: CoachRegister, meta: {needAuth: true}},
-    {path: routeNames.wrongPath, redirect: routeNames.coachesList},
+    {path: '/user-auth', name : routeNames.auth , component: UserAuth, meta: {dontNeedAuth: true}},
+    {path: '/messages', name : routeNames.messageList, component: MessagesList, meta: {needAuth: true}},
+    {path: '/register',name :routeNames.coachRegister, component: CoachRegister, meta: {needAuth: true}},
+    {path: '/:somethingWrong(.*)', name : routeNames.wrongPath, redirect:  routeNames.coachesList},
 ]
 
 

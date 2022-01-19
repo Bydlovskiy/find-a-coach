@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {IUserRequest} from '@/pages/auth/IUserType'
+import {IUserRequest} from '@/pages/auth/IUserRequestType'
 
 class AuthService {
     apiKey = 'AIzaSyCvYGKKzHi0w8PmgXktVeNaP0ulu5LONOo'
