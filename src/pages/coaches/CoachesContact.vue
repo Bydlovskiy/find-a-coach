@@ -22,22 +22,20 @@
             autosize
         ></el-input>
       </el-form-item>
-      <el-button @click="submitMessage">Send message</el-button>
+      <el-button color="#626aef" plain size="large" @click="submitMessage">Send message</el-button>
     </el-form>
   </el-card>
-
 </template>
 
 <script lang="ts">
 
-import {computed, defineComponent, reactive} from "vue";
+import {defineComponent, reactive} from "vue";
 
 import {useFormConfig} from "@/composables/useFormConfig";
 
 import {messagesStore} from '../messages/MessagesStore'
 
 import {ElNotification} from "element-plus";
-import {authStore} from "@/pages/auth/AuthStore";
 
 export default defineComponent({
 

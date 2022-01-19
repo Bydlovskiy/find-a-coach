@@ -1,21 +1,24 @@
 <template>
   <el-card class="w-6/12">
-    <h3>Find you couch</h3>
+    <h3 class="text-2xl font-bold mb-4">Find you couch</h3>
     <div>
-      <el-checkbox-group v-model="filterList">
+      <el-checkbox-group  v-model="filterList">
         <el-checkbox
+            :border="true"
             label="frontend"
             size="large"
             checked
             @change="cangeFilters"
         />
         <el-checkbox
+            :border="true"
             label="backend"
             size="large"
             checked
             @change="cangeFilters"
         />
         <el-checkbox
+            :border="true"
             label="career"
             size="large"
             checked

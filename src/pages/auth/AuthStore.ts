@@ -6,13 +6,18 @@ import {store} from "@/store/MainStore";
 
 import {ElNotification} from "element-plus/es";
 
-import { IUserRequest} from "@/pages/auth/IUserRequestType";
+import {IUserRequest} from "@/pages/auth/IUserRequestType";
+
 import {IUserResponse} from "@/pages/auth/IUserResponseType";
+import router from "@/router";
+import {routeNames} from "@/router/Route.names";
 
 @Module
 export default class AuthModule extends VuexModule {
 
-    timer: any ;
+    timer: any;
+
+    reset = false;
 
     isAutoLogout = false;
 
@@ -40,7 +45,7 @@ export default class AuthModule extends VuexModule {
 
     @Action
     signUp(userData: IUserRequest) {
-        return authService.signUpAndLogin(userData, this.signUpHref)
+        authService.signUpAndLogin(userData, this.signUpHref)
             .then(() => {
                 ElNotification.success({
                     title: 'Success',
@@ -62,7 +67,7 @@ export default class AuthModule extends VuexModule {
 
     @Action
     logIn(userData: IUserRequest) {
-        return authService.signUpAndLogin(userData, this.logInHref)
+        authService.signUpAndLogin(userData, this.logInHref)
             .then(response => {
                 authStore.setUser({
                     token: response.data.idToken,
@@ -76,12 +81,15 @@ export default class AuthModule extends VuexModule {
                 this.timer = setTimeout(() => {
                     this.logOut();
                     this.setAutoLogout();
-                }, expirationTime)
+                }, expirationTime);
+            })
+            .then(() => {
                 ElNotification.success({
                     title: 'Success',
                     message: 'You logined successfully!',
                     position: 'bottom-right'
                 });
+                router.push({name: routeNames.coachesList})
             })
             .catch(() => {
                 ElNotification.error(
@@ -99,9 +107,8 @@ export default class AuthModule extends VuexModule {
     trylogin() {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
-        const expiresIn : string | null = localStorage.getItem('expiresIn');
+        const expiresIn: string | null = localStorage.getItem('expiresIn');
         const expirationDate = +(expiresIn as string) - new Date().getTime();
-
         if (expirationDate < 0) {
             return
         }
@@ -129,4 +136,4 @@ export default class AuthModule extends VuexModule {
     }
 }
 
-export const authStore = new AuthModule({store, name: 'AuthStore'})
+export const authStore = new AuthModule({store, name: 'AuthStore'});

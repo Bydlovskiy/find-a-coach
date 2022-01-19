@@ -1,8 +1,8 @@
 <template>
   <div class="flex ">
-    <el-button @click="refreshList">Refresh list</el-button>
-    <el-button v-if="isLogin && !isRegistered">
-      <router-link :to="routeNames.coachRegister"> Register new Coach </router-link>
+    <el-button color="#626aef" plain size="large" @click="refreshList">Refresh list</el-button>
+    <el-button color="#626aef" plain size="large" v-if="isLogin && !isRegistered">
+      <router-link :to="{ name : globalRouteNames.coachRegister}"> Register new Coach </router-link>
     </el-button>
 
   </div>
@@ -46,7 +46,7 @@ export default defineComponent({
 
     const isLogin = computed(() => !!authStore.userData.token);
 
-    const isRegistered = computed(() => coachesList.value.some(coach => coach.id === authStore.userData.userId))
+    const isRegistered = computed(() => coachStore.coaches.some(coach => coach.id === authStore.userData.userId))
 
     const coachesList = ref(computed(() => {
       return coachStore.coaches
@@ -72,13 +72,15 @@ export default defineComponent({
 
     refreshList();
 
+    const globalRouteNames = routeNames;
+
     return {
       coachesList,
       refreshList,
       setFilters,
       isLogin ,
       isRegistered,
-      routeNames
+      globalRouteNames
     };
   },
 });

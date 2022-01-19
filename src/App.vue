@@ -17,23 +17,26 @@ import {authStore} from "@/pages/auth/AuthStore";
 import router from "@/router";
 import {routeNames} from "@/router/Route.names";
 
-export default defineComponent ({
+export default defineComponent({
   components: {
     TheHeader,
   },
-  setup(){
+  setup() {
     const autoLogout = computed(() => authStore.isAutoLogout)
-    watch(autoLogout ,(newValue , oldValue) => {
-      if(newValue && newValue != oldValue){
-        router.replace(routeNames.coachesList)
+    watch(autoLogout, (newValue, oldValue) => {
+      if (newValue && newValue != oldValue) {
+        router.replace({name: globalRouteNames.coachesList})
       }
-    } )
+    })
     const tryLogin = () => {
       authStore.trylogin()
     }
-    const refreshList =  () => {
+    const refreshList = () => {
       coachStore.getCoaches();
     };
+
+    const globalRouteNames = routeNames;
+
     refreshList();
     tryLogin();
 

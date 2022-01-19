@@ -5,7 +5,8 @@ import {store} from "@/store/MainStore";
 import {messagesService} from '@/services/http'
 
 import {ElNotification} from "element-plus/es";
-import { IMessageRequest , IMessageResponse } from "@/pages/messages/IMessageType";
+
+import {IMessageRequest, IMessageResponse} from "@/pages/messages/IMessageType";
 
 @Module
 class MessagesModule extends VuexModule {
@@ -37,7 +38,7 @@ class MessagesModule extends VuexModule {
     }
 
     @Action
-    setMessage(message : IMessageRequest) {
+    setMessage(message: IMessageRequest) {
         const requestData = {message: message.message, email: message.email};
         messagesService.setMessage(requestData, message.coachId)
             .then(() => this.getMessages(message.coachId))
@@ -53,4 +54,4 @@ class MessagesModule extends VuexModule {
 
 }
 
-export const messagesStore = new MessagesModule({store, name: 'MessagesStore'})
+export const messagesStore = new MessagesModule({store, name: 'MessagesStore'});

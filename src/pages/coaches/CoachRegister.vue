@@ -28,7 +28,9 @@
             type="textarea"
         ></el-input>
       </el-form-item>
-      <el-button size="large" type="primary" @click="submit">Regsiter</el-button>
+      <div class="flex justify-center">
+        <el-button color="#626aef" size="large" style="color: white" @click="submit">Regsiter</el-button>
+      </div>
     </el-form>
   </el-card>
 </template>
@@ -101,12 +103,12 @@ export default defineComponent({
           position: 'bottom-right'
         })
       }).then(() => {
-        router.push(routeNames.coachesList)
+        router.replace({name: routeNames.coachesList})
       }).catch(() => {
         ElNotification.error({
               title: 'Error',
               message: 'Something is wrong, please check your form.',
-          position: 'bottom-right'
+              position: 'bottom-right'
             }
         )
       });

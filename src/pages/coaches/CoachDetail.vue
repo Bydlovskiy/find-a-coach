@@ -2,23 +2,23 @@
   <router-view></router-view>
 
   <el-card class="w-6/12 my-4">
-    <h1>{{ selectedFullName }}</h1>
+    <h1 class="capitalize font-bold text-lg mb-2">{{ selectedFullName }}</h1>
     <h3>${{ selectedHourlyRate }}/hour</h3>
   </el-card>
 
   <el-card class="w-6/12 my-4">
-    <p>Interested? Rich out now</p>
-    <el-button v-if="!isYour">
+    <p class="font-medium mb-2">Interested? Rich out now</p>
+    <el-button color="#626aef" plain size="large" v-if="!isYour">
       <router-link :to="{name : globalRouteNames.coachContact, params : {id : id}}">Contact</router-link>
     </el-button>
   </el-card>
 
   <el-card class="w-6/12 my-4 min-h-min">
-    <div class="flex">
+    <div class="flex mb-2">
       <div
           v-for="area in selectedAreas"
           :key="area"
-          class="bg-blue-600 rounded-2xl w-20 flex justify-center items-center mx-4"
+          class="text-white bg-basic-violet rounded-2xl w-20 flex justify-center items-center mx-4 text-sm"
       >
         <span class="font-serif font-normal">{{ area }}</span>
       </div>
@@ -35,7 +35,7 @@ import {coachStore} from "@/store";
 
 import {authStore} from "@/store";
 
-import { ICoachResponse } from "@/pages/coaches/ICoachType";
+import {ICoachResponse} from "@/pages/coaches/ICoachType";
 
 import {routeNames} from "@/router/Route.names";
 
@@ -47,7 +47,7 @@ export default defineComponent({
     },
   },
 
-  setup: function (props) {
+  setup(props) {
 
     const isYour = computed(() => props.id === authStore.userData.userId);
 
@@ -62,12 +62,11 @@ export default defineComponent({
     };
     getCoach();
     let selectedCoach: ComputedRef<ICoachResponse>;
-    let selectedFullName: Ref<string> = ref('');
-    let selectedHourlyRate: Ref<number | null> = ref(null);
-    let selectedAreas: Ref<string[]> = ref([]);
-    let selectedDescription: Ref<string> = ref('');
-    const globalRouteNames = routeNames
-
+    const selectedFullName: Ref<string> = ref('');
+    const selectedHourlyRate: Ref<number | null> = ref(null);
+    const selectedAreas: Ref<string[]> = ref([]);
+    const selectedDescription: Ref<string> = ref('');
+    const globalRouteNames = routeNames;
 
     return {
       selectedFullName,
