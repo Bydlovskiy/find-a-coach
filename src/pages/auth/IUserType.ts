@@ -3,8 +3,5 @@ export type IUserRequest = {
     password: string
 }
 
-export type IUserResponse = {
-    token : string ,
-    userId : string
-}
+
 

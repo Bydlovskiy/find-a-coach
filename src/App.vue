@@ -8,19 +8,27 @@
 
 <script lang="ts">
 
-import { defineComponent } from "vue";
+import {defineComponent, watch, ref, computed} from "vue";
 
 import TheHeader from "./layouts/TheHeader.vue";
 
 import {coachStore} from "@/pages/coaches/CoachStore";
 
 import {authStore} from "@/pages/auth/AuthStore";
+import router from "@/router";
+import {routeNames} from "@/router/Route.names";
 
 export default defineComponent ({
   components: {
     TheHeader,
   },
   setup(){
+    const autoLogout = computed(() => authStore.isAutoLogout)
+    watch(autoLogout ,(newValue , oldValue) => {
+      if(newValue && newValue != oldValue){
+        router.replace(routeNames.coachesList)
+      }
+    } )
     const tryLogin = () => {
       authStore.trylogin()
     }

@@ -16,7 +16,7 @@ class CoachesModule extends VuexModule {
 
     get hashedCoaches() {
         return this.coaches
-            .reduce((acc: any, coach) => {
+            .reduce((acc : any, coach) => {
                 acc[coach.id] = coach
                 return acc
             }, {})
