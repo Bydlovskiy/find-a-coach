@@ -6,9 +6,9 @@
     <h3>${{ selectedHourlyRate }}/hour</h3>
   </el-card>
 
-  <el-card class="w-6/12 my-4">
+  <el-card v-if="!isYour" class="w-6/12 my-4">
     <p class="font-medium mb-2">Interested? Rich out now</p>
-    <el-button color="#626aef" plain size="large" v-if="!isYour">
+    <el-button color="#626aef" plain size="large">
       <router-link :to="{name : globalRouteNames.coachContact, params : {id : id}}">Contact</router-link>
     </el-button>
   </el-card>
